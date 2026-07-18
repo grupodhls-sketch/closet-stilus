@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5ECD5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EDE0C5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <!-- Sandal -->
+  <path d="M150 200 Q160 180 200 175 Q240 180 250 200 L260 280 Q200 295 140 280 Z" fill="#D4AF37" opacity="0.6"/>
+  <path d="M170 195 Q200 185 230 195 L235 240 Q200 250 165 240 Z" fill="#C8A54B" opacity="0.5"/>
+  <!-- Heel -->
+  <path d="M145 280 L140 350 L160 350 L155 280" fill="#D4AF37" opacity="0.5"/>
+  <path d="M255 280 L260 350 L240 350 L245 280" fill="#D4AF37" opacity="0.5"/>
+  <!-- Strap -->
+  <path d="M180 195 Q200 170 220 195" fill="none" stroke="#D4AF37" stroke-width="3" opacity="0.6"/>
+  <circle cx="200" cy="178" r="5" fill="#D4AF37" opacity="0.5"/>
+  <!-- Sparkles -->
+  <text x="100" y="150" font-size="18" opacity="0.35">✨</text>
+  <text x="290" y="180" font-size="14" opacity="0.3">✨</text>
+  <text x="310" y="320" font-size="16" opacity="0.2">💎</text>
+  <!-- Ground line -->
+  <path d="M100 355 Q200 345 300 355" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.2"/>
+  <!-- Text -->
+  <text x="200" y="410" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#8B6914" font-weight="600">Sandália Feminina</text>
+  <text x="200" y="435" text-anchor="middle" font-family="Arial" font-size="13" fill="#A08530">Gold</text>
+  <rect x="10" y="10" width="380" height="480" rx="16" fill="none" stroke="#D4AF37" stroke-width="1.5" opacity="0.25"/>
+</svg>

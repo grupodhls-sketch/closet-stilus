@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0D0F0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D0C0E5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <!-- Lace pattern background -->
+  <circle cx="100" cy="80" r="30" fill="none" stroke="#7E58B8" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="300" cy="100" r="25" fill="none" stroke="#B88BEA" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="80" cy="400" r="20" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.2"/>
+  <!-- Garment - Renda set -->
+  <path d="M165 130 Q200 115 235 130 L245 190 Q200 205 155 190 Z" fill="#7E58B8" opacity="0.5"/>
+  <path d="M175 190 Q200 200 225 190 L220 250 Q200 260 180 250 Z" fill="#B88BEA" opacity="0.5"/>
+  <!-- Lace texture -->
+  <path d="M170 150 Q185 145 200 150 Q215 145 230 150" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.4"/>
+  <path d="M175 170 Q190 165 200 170 Q210 165 225 170" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.3"/>
+  <!-- Bottom piece -->
+  <path d="M170 280 Q200 270 230 280 Q225 310 200 320 Q175 310 170 280Z" fill="#7E58B8" opacity="0.4"/>
+  <!-- Flower decorations -->
+  <circle cx="150" cy="200" r="5" fill="#D4AF37" opacity="0.3"/>
+  <circle cx="250" cy="180" r="4" fill="#B88BEA" opacity="0.3"/>
+  <circle cx="280" cy="350" r="6" fill="#D4AF37" opacity="0.2"/>
+  <!-- Text -->
+  <text x="200" y="390" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#7E58B8" font-weight="600">Conjunto Renda</text>
+  <text x="200" y="415" text-anchor="middle" font-family="Arial" font-size="13" fill="#9B7DB8">Roxa</text>
+  <rect x="10" y="10" width="380" height="480" rx="16" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.2"/>
+</svg>

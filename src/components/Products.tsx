@@ -1,78 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ShoppingBag, Heart, Eye } from "lucide-react";
+import { products } from "@/data/products";
+import { useCart, Product } from "@/context/CartContext";
+import { SizeModal } from "./SizeModal";
 
 const categories = ["Todos", "Lingerie", "Baby Dolls", "Biquínis", "Cosméticos", "Calçados"];
 
-const products = [
-  {
-    id: 1,
-    name: "Conjunto Lavanda Delicado",
-    category: "Lingerie",
-    price: "R$ 89,90",
-    originalPrice: "R$ 129,90",
-    badge: "Mais Vendido",
-    emoji: "💜",
-    color: "from-lavanda/30 to-lilas/20",
-  },
-  {
-    id: 2,
-    name: "Baby Doll Romântico",
-    category: "Baby Dolls",
-    price: "R$ 119,90",
-    originalPrice: null,
-    badge: "Novidade",
-    emoji: "👗",
-    color: "from-lilas/20 to-roxo/10",
-  },
-  {
-    id: 3,
-    name: "Biquíni Dourado Premium",
-    category: "Biquínis",
-    price: "R$ 149,90",
-    originalPrice: "R$ 199,90",
-    badge: "-25%",
-    emoji: "✨",
-    color: "from-dourado/15 to-lavanda/15",
-  },
-  {
-    id: 4,
-    name: "Kit Cosméticos Stilus",
-    category: "Cosméticos",
-    price: "R$ 69,90",
-    originalPrice: null,
-    badge: null,
-    emoji: "💄",
-    color: "from-lavanda/20 to-dourado/10",
-  },
-  {
-    id: 5,
-    name: "Sandália Feminina Gold",
-    category: "Calçados",
-    price: "R$ 179,90",
-    originalPrice: "R$ 229,90",
-    badge: "Exclusivo",
-    emoji: "👠",
-    color: "from-dourado/20 to-lilas/15",
-  },
-  {
-    id: 6,
-    name: "Conjunto Renda Roxa",
-    category: "Lingerie",
-    price: "R$ 99,90",
-    originalPrice: null,
-    badge: null,
-    emoji: "🦋",
-    color: "from-roxo/15 to-lavanda/20",
-  },
-];
-
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
@@ -82,6 +21,26 @@ const itemVariants = {
 
 export function Products() {
   const reduce = useReducedMotion();
+  const { addItem } = useCart();
+  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const filteredProducts =
+    activeCategory === "Todos"
+      ? products
+      : products.filter((p) => p.category === activeCategory);
+
+  const handleAddToCart = (product: Product) => {
+    setSelectedProduct(product);
+    setModalOpen(true);
+  };
+
+  const handleConfirmSize = (size: string) => {
+    if (selectedProduct) {
+      addItem(selectedProduct, size);
+    }
+  };
 
   return (
     <section id="colecao" className="section-padding bg-white">
@@ -112,11 +71,12 @@ export function Products() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
-          {categories.map((cat, i) => (
+          {categories.map((cat) => (
             <button
               key={cat}
+              onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                i === 0
+                activeCategory === cat
                   ? "bg-roxo text-white shadow-[0_4px_15px_rgba(126,88,184,0.3)]"
                   : "bg-cinza-claro text-cinza-texto hover:bg-lavanda/30 hover:text-roxo"
               }`}
@@ -134,18 +94,19 @@ export function Products() {
           viewport={{ once: true }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <motion.div
               key={product.id}
               variants={reduce ? undefined : itemVariants}
               className="card-produto group"
             >
-              {/* Image placeholder */}
-              <div className={`relative aspect-[3/4] bg-gradient-to-br ${product.color} overflow-hidden`}>
-                {/* Emoji central */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-7xl group-hover:scale-110 transition-transform duration-500">{product.emoji}</span>
-                </div>
+              {/* Image */}
+              <div className="relative aspect-[3/4] bg-gradient-to-br from-lavanda/20 to-lilas/10 overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
 
                 {/* Badge */}
                 {product.badge && (
@@ -157,19 +118,23 @@ export function Products() {
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-cinza-escuro/0 group-hover:bg-cinza-escuro/10 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex gap-3">
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="Ver detalhes">
-                      <Eye size={16} className="text-roxo" />
-                    </button>
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="Favoritar">
-                      <Heart size={16} className="text-roxo" />
-                    </button>
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform" aria-label="Adicionar à sacola">
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                      aria-label="Adicionar ao carrinho"
+                    >
                       <ShoppingBag size={16} className="text-roxo" />
+                    </button>
+                    <button
+                      className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                      aria-label="Favoritar"
+                    >
+                      <Heart size={16} className="text-roxo" />
                     </button>
                   </div>
                 </div>
 
-                {/* Moldura dourada sutil no hover */}
+                {/* Moldura dourada no hover */}
                 <div className="absolute inset-3 border-2 border-dourado/0 group-hover:border-dourado/20 rounded-2xl transition-all duration-500 pointer-events-none" />
               </div>
 
@@ -178,39 +143,56 @@ export function Products() {
                 <p className="text-cinza-texto text-xs font-medium uppercase tracking-wider mb-1">
                   {product.category}
                 </p>
-                <h3 className="font-[family-name:var(--font-playfair)] text-lg text-cinza-escuro font-semibold mb-3">
+                <h3 className="font-[family-name:var(--font-playfair)] text-lg text-cinza-escuro font-semibold mb-2">
                   {product.name}
                 </h3>
-                <div className="flex items-center gap-3">
-                  <span className="text-roxo font-bold text-lg">{product.price}</span>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-roxo font-bold text-lg">
+                    R$ {product.price.toFixed(2).replace(".", ",")}
+                  </span>
                   {product.originalPrice && (
-                    <span className="text-cinza-texto/50 text-sm line-through">{product.originalPrice}</span>
+                    <span className="text-cinza-texto/50 text-sm line-through">
+                      R$ {product.originalPrice.toFixed(2).replace(".", ",")}
+                    </span>
                   )}
                 </div>
+
+                {/* Sizes preview */}
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {product.sizes.map((size) => (
+                    <span
+                      key={size}
+                      className="text-[10px] px-2 py-0.5 rounded bg-cinza-claro text-cinza-texto font-medium"
+                    >
+                      {size}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Add to cart button */}
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="w-full h-11 bg-roxo/10 text-roxo rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-roxo hover:text-white transition-all duration-300"
+                >
+                  <ShoppingBag size={15} />
+                  Adicionar ao Carrinho
+                </button>
               </div>
             </motion.div>
           ))}
         </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-14"
-        >
-          <a
-            href="https://wa.me/5571991626828?text=Ol%C3%A1!%20Gostaria%20de%20ver%20mais%20produtos"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-lavanda"
-          >
-            Ver Toda Coleção
-            <ShoppingBag size={18} />
-          </a>
-        </motion.div>
       </div>
+
+      {/* Size Modal */}
+      <SizeModal
+        product={selectedProduct!}
+        isOpen={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        onAdd={handleConfirmSize}
+      />
     </section>
   );
 }

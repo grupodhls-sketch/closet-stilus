@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag, Heart, Search } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { href: "#inicio", label: "Início" },
@@ -15,6 +16,7 @@ const navLinks = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { totalItems, openCart } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -66,22 +68,50 @@ export function Header() {
             <button className="p-2 text-cinza-texto hover:text-roxo transition-colors" aria-label="Favoritos">
               <Heart size={20} />
             </button>
-            <button className="p-2 text-cinza-texto hover:text-roxo transition-colors relative" aria-label="Sacola">
+            <button
+              onClick={openCart}
+              className="p-2 text-cinza-texto hover:text-roxo transition-colors relative"
+              aria-label="Abrir carrinho"
+            >
               <ShoppingBag size={20} />
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-dourado text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                0
-              </span>
+              {totalItems > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-dourado text-white text-[10px] font-bold rounded-full flex items-center justify-center"
+                >
+                  {totalItems}
+                </motion.span>
+              )}
             </button>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden p-2 text-cinza-escuro"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={openCart}
+              className="p-2 text-cinza-texto hover:text-roxo transition-colors relative"
+              aria-label="Abrir carrinho"
+            >
+              <ShoppingBag size={20} />
+              {totalItems > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-dourado text-white text-[10px] font-bold rounded-full flex items-center justify-center"
+                >
+                  {totalItems}
+                </motion.span>
+              )}
+            </button>
+            <button
+              className="p-2 text-cinza-escuro"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -106,20 +136,6 @@ export function Header() {
                   {link.label}
                 </a>
               ))}
-              <div className="flex items-center gap-6 pt-4">
-                <button className="p-2 text-cinza-texto hover:text-roxo transition-colors" aria-label="Buscar">
-                  <Search size={20} />
-                </button>
-                <button className="p-2 text-cinza-texto hover:text-roxo transition-colors" aria-label="Favoritos">
-                  <Heart size={20} />
-                </button>
-                <button className="p-2 text-cinza-texto hover:text-roxo transition-colors relative" aria-label="Sacola">
-                  <ShoppingBag size={20} />
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-dourado text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                    0
-                  </span>
-                </button>
-              </div>
             </nav>
           </motion.div>
         )}

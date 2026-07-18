@@ -1,3 +1,6 @@
+"use client";
+
+import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Products } from "@/components/Products";
@@ -6,10 +9,11 @@ import { Testimonials } from "@/components/Testimonials";
 import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { Cart } from "@/components/Cart";
 
 export default function Home() {
   return (
-    <>
+    <CartProvider>
       <Header />
       <main>
         <Hero />
@@ -20,6 +24,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppButton />
-    </>
+      <Cart />
+    </CartProvider>
   );
 }

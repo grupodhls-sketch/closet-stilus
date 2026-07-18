@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { SalesProvider } from "@/context/SalesContext";
 import { AdminProvider } from "@/context/AdminContext";
+import { SearchProvider } from "@/context/SearchContext";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Products } from "@/components/Products";
@@ -14,6 +15,7 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Cart } from "@/components/Cart";
 import { FavoritesPopup } from "@/components/FavoritesPopup";
+import { SearchOverlay } from "@/components/SearchOverlay";
 import { AdminPanel } from "@/components/AdminPanel";
 
 export default function Home() {
@@ -22,6 +24,7 @@ export default function Home() {
       <FavoritesProvider>
       <SalesProvider>
       <AdminProvider>
+      <SearchProvider>
       <Header />
       <main>
         <Hero />
@@ -34,7 +37,9 @@ export default function Home() {
       <WhatsAppButton />
       <Cart />
       <FavoritesPopup />
+      <SearchOverlay />
       <AdminPanel />
+      </SearchProvider>
       </AdminProvider>
       </SalesProvider>
       </FavoritesProvider>

@@ -276,6 +276,11 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
     return <LoginScreen onLogin={() => setPanelOpen(true)} />;
   }
 
+  const handleGearClick = () => {
+    if (isLoggedIn) setPanelOpen(!panelOpen);
+    else setLoginOpen(true);
+  };
+
   const handleLogin = async () => {
     const result = await login(user, pass);
     if (result.ok) {
@@ -402,7 +407,16 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
 
   return (
     <>
-      {/* ═══ GEAR BUTTON — removed for security ═══ */}
+      {/* ═══ GEAR BUTTON ═══ */}
+      <motion.button
+        onClick={handleGearClick}
+        whileHover={{ rotate: 90, scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-24 right-4 md:bottom-auto md:top-5 md:right-5 z-[70] w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/80 backdrop-blur-xl border border-lavanda/30 shadow-[0_4px_20px_rgba(126,88,184,0.15)] flex items-center justify-center text-cinza-texto hover:text-roxo hover:border-roxo/40 transition-colors duration-300"
+        aria-label="Painel administrativo"
+      >
+        <Settings size={17} />
+      </motion.button>
 
       {/* ═══ LOGIN MODAL ═══ */}
       <AnimatePresence>

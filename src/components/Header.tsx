@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag, Heart, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoritesContext";
+import { useSearch } from "@/context/SearchContext";
 
 const navLinks = [
   { href: "#inicio", label: "Início" },
@@ -19,6 +20,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { totalItems, openCart } = useCart();
   const { totalFavorites, openFavorites } = useFavorites();
+  const { openSearch } = useSearch();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -63,7 +65,7 @@ export function Header() {
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={() => document.getElementById("colecao")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={openSearch}
               className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300"
               aria-label="Buscar"
             >
@@ -105,6 +107,13 @@ export function Header() {
 
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-1">
+            <button
+              onClick={openSearch}
+              className="w-9 h-9 rounded-xl text-cinza-texto hover:text-roxo flex items-center justify-center"
+              aria-label="Buscar"
+            >
+              <Search size={17} />
+            </button>
             <button
               onClick={openFavorites}
               className="w-9 h-9 rounded-xl text-cinza-texto hover:text-roxo flex items-center justify-center relative"

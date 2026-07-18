@@ -35,17 +35,13 @@ export function Header() {
       }`}
     >
       <div className="container-premium">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a href="#inicio" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-dourado/30 group-hover:ring-dourado/60 transition-all duration-300">
-              <img
-                src="/logo.png"
-                alt="Closet Stilus"
-                className="w-full h-full object-cover"
-              />
+          <a href="#inicio" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 md:w-11 md:h-11 rounded-full overflow-hidden ring-2 ring-dourado/30 group-hover:ring-dourado/60 transition-all duration-300">
+              <img src="/logo.png" alt="Closet Stilus" className="w-full h-full object-cover" />
             </div>
-            <span className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-cinza-escuro hidden sm:block">
+            <span className="font-[family-name:var(--font-playfair)] text-lg md:text-xl font-semibold text-cinza-escuro hidden sm:block">
               Closet Stilus
             </span>
           </a>
@@ -66,11 +62,22 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300" aria-label="Buscar">
+            <button
+              onClick={() => document.getElementById("colecao")?.scrollIntoView({ behavior: "smooth" })}
+              className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300"
+              aria-label="Buscar"
+            >
               <Search size={18} />
             </button>
-            <button className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300 relative" aria-label="Favoritos">
-              <Heart size={18} />
+            <button
+              onClick={() => {
+                const el = document.getElementById("colecao");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300 relative"
+              aria-label="Favoritos"
+            >
+              <Heart size={18} className={totalFavorites > 0 ? "fill-red-400 text-red-400" : ""} />
               {totalFavorites > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
@@ -102,27 +109,38 @@ export function Header() {
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-1">
             <button
-              onClick={openCart}
-              className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all relative"
-              aria-label="Abrir carrinho"
+              onClick={() => {
+                const el = document.getElementById("colecao");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="w-9 h-9 rounded-xl text-cinza-texto hover:text-roxo flex items-center justify-center relative"
+              aria-label="Favoritos"
             >
-              <ShoppingBag size={18} />
-              {totalItems > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-dourado text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md"
-                >
-                  {totalItems}
-                </motion.span>
+              <Heart size={17} className={totalFavorites > 0 ? "fill-red-400 text-red-400" : ""} />
+              {totalFavorites > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {totalFavorites}
+                </span>
               )}
             </button>
             <button
-              className="w-10 h-10 rounded-xl text-cinza-escuro flex items-center justify-center"
+              onClick={openCart}
+              className="w-9 h-9 rounded-xl text-cinza-texto hover:text-roxo flex items-center justify-center relative"
+              aria-label="Abrir carrinho"
+            >
+              <ShoppingBag size={17} />
+              {totalItems > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-dourado text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+            <button
+              className="w-9 h-9 rounded-xl text-cinza-escuro flex items-center justify-center"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
             >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -138,7 +156,7 @@ export function Header() {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-lavanda/20 overflow-hidden"
           >
-            <nav className="container-premium py-6 flex flex-col gap-1">
+            <nav className="container-premium py-4 flex flex-col gap-0.5">
               {navLinks.map((link) => (
                 <a
                   key={link.href}

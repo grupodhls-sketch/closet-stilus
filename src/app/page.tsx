@@ -2,6 +2,8 @@
 
 import { CartProvider } from "@/context/CartContext";
 import { FavoritesProvider } from "@/context/FavoritesContext";
+import { SalesProvider } from "@/context/SalesContext";
+import { AdminProvider } from "@/context/AdminContext";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Products } from "@/components/Products";
@@ -11,11 +13,14 @@ import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Cart } from "@/components/Cart";
+import { AdminPanel } from "@/components/AdminPanel";
 
 export default function Home() {
   return (
     <CartProvider>
       <FavoritesProvider>
+      <SalesProvider>
+      <AdminProvider>
       <Header />
       <main>
         <Hero />
@@ -27,6 +32,9 @@ export default function Home() {
       <Footer />
       <WhatsAppButton />
       <Cart />
+      <AdminPanel />
+      </AdminProvider>
+      </SalesProvider>
       </FavoritesProvider>
     </CartProvider>
   );

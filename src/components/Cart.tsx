@@ -3,9 +3,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, Trash2, MessageCircle, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useSales } from "@/context/SalesContext";
 
 export function Cart() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice, clearCart } = useCart();
+  const { logSale } = useSales();
 
   const generateWhatsAppMessage = () => {
     if (items.length === 0) return "";
@@ -33,6 +35,17 @@ export function Cart() {
   const handleCheckout = () => {
     const message = generateWhatsAppMessage();
     if (message) {
+      // Log sale for analytics
+      logSale(
+        items.map((item) => ({
+          productName: item.product.name,
+          category: item.product.category,
+          size: item.size,
+          quantity: item.quantity,
+          price: item.product.price,
+        }))
+      );
+      clearCart();
       window.open(`https://wa.me/5571991626828?text=${message}`, "_blank");
     }
   };

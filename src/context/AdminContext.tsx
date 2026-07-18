@@ -5,8 +5,8 @@ import { Product } from "./CartContext";
 import { products as defaultProducts } from "@/data/products";
 
 // ── Security: strong password (SHA-256 hash comparison) ──
-const ADMIN_USER = "admin";
-const ADMIN_PASS_HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // sha256("password123!")
+const ADMIN_USER = "anneloja20";
+const ADMIN_PASS_HASH = "f3b5b526291cc52810415c52255ce0c8311f1b268479808705ba8a123525cf14"; // sha256("chloe2026")
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 5 * 60 * 1000; // 5 minutes
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes

@@ -195,7 +195,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
               <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cinza-texto/40" />
               <input type="text" value={user} onChange={(e) => setUser(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && passRef.current?.focus()}
-                placeholder="admin"
+                placeholder="anneloja20"
                 className="w-full h-12 pl-10 pr-4 rounded-xl bg-cinza-claro border border-transparent focus:border-roxo/30 focus:bg-white text-cinza-escuro text-sm outline-none transition-all" />
             </div>
           </div>
@@ -452,7 +452,7 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
                     <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cinza-texto/40" />
                     <input type="text" value={user} onChange={(e) => setUser(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && passRef.current?.focus()}
-                      placeholder="admin"
+                      placeholder="anneloja20"
                       className="w-full h-11 sm:h-12 pl-10 pr-4 rounded-xl bg-cinza-claro border border-transparent focus:border-roxo/30 focus:bg-white text-cinza-escuro text-sm outline-none transition-all" />
                   </div>
                 </div>

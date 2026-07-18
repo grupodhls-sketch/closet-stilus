@@ -8,7 +8,7 @@ export const products: Product[] = [
     price: 89.9,
     originalPrice: 129.9,
     badge: "Mais Vendido",
-    image: "/products/conjunto-lavanda.svg",
+    image: "/products/conjunto-lavanda.jpg",
     sizes: ["P", "M", "G", "GG"],
   },
   {
@@ -17,7 +17,7 @@ export const products: Product[] = [
     category: "Baby Dolls",
     price: 119.9,
     badge: "Novidade",
-    image: "/products/baby-doll-romantico.svg",
+    image: "/products/baby-doll-romantico.jpg",
     sizes: ["P", "M", "G", "GG"],
   },
   {
@@ -27,7 +27,7 @@ export const products: Product[] = [
     price: 149.9,
     originalPrice: 199.9,
     badge: "-25%",
-    image: "/products/biquini-dourado.svg",
+    image: "/products/biquini-dourado.jpg",
     sizes: ["36", "38", "40", "42", "44"],
   },
   {
@@ -35,7 +35,7 @@ export const products: Product[] = [
     name: "Kit Cosméticos Stilus",
     category: "Cosméticos",
     price: 69.9,
-    image: "/products/kit-cosmeticos.svg",
+    image: "/products/kit-cosmeticos.jpg",
     sizes: ["Único"],
   },
   {
@@ -45,7 +45,7 @@ export const products: Product[] = [
     price: 179.9,
     originalPrice: 229.9,
     badge: "Exclusivo",
-    image: "/products/sandalia-gold.svg",
+    image: "/products/sandalia-gold.jpg",
     sizes: ["35", "36", "37", "38", "39", "40"],
   },
   {
@@ -53,7 +53,7 @@ export const products: Product[] = [
     name: "Conjunto Renda Roxa",
     category: "Lingerie",
     price: 99.9,
-    image: "/products/conjunto-renda-roxa.svg",
+    image: "/products/conjunto-renda-roxa.jpg",
     sizes: ["P", "M", "G", "GG"],
   },
   {
@@ -63,7 +63,7 @@ export const products: Product[] = [
     price: 139.9,
     originalPrice: 179.9,
     badge: "Novidade",
-    image: "/products/camisola-renda.svg",
+    image: "/products/camisola-renda.jpg",
     sizes: ["P", "M", "G", "GG"],
   },
   {
@@ -71,7 +71,7 @@ export const products: Product[] = [
     name: "Biquíni Lavanda Clássico",
     category: "Biquínis",
     price: 129.9,
-    image: "/products/biquini-lavanda.svg",
+    image: "/products/biquini-lavanda.jpg",
     sizes: ["36", "38", "40", "42", "44"],
   },
   {
@@ -80,7 +80,7 @@ export const products: Product[] = [
     category: "Cosméticos",
     price: 54.9,
     badge: "Promoção",
-    image: "/products/kit-batom-gloss.svg",
+    image: "/products/kit-batom-gloss.jpg",
     sizes: ["Único"],
   },
 ];

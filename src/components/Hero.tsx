@@ -3,12 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles, Star, Truck, ShieldCheck } from "lucide-react";
 
-const stats = [
-  { value: "500+", label: "Clientes Felizes", icon: "💜" },
-  { value: "100%", label: "Produtos Selecionados", icon: "✨" },
-  { value: "5★", label: "Avaliação", icon: "⭐" },
-];
-
 const floatingElements = [
   { emoji: "💜", x: "10%", y: "20%", size: "text-4xl", delay: 0, duration: 6 },
   { emoji: "✨", x: "85%", y: "15%", size: "text-3xl", delay: 1, duration: 5 },

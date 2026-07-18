@@ -102,7 +102,7 @@ export function SizeModal({ product, isOpen, onClose, onAdd }: SizeModalProps) {
             <button
               onClick={handleAdd}
               disabled={!selected}
-              className={`w-full h-13 rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-all duration-300 ${
+              className={`w-full h-12 rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-all duration-300 ${
                 selected
                   ? "bg-roxo text-white hover:bg-roxo/90 shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-[1.02] active:scale-[0.98]"
                   : "bg-cinza-claro text-cinza-texto/50 cursor-not-allowed"

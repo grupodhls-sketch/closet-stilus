@@ -5,6 +5,7 @@ import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Heart } from "lucide-react";
 import { products } from "@/data/products";
 import { useCart, Product } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 import { SizeModal } from "./SizeModal";
 
 const categories = ["Todos", "Lingerie", "Baby Dolls", "Biquínis", "Cosméticos", "Calçados"];
@@ -22,6 +23,7 @@ const itemVariants = {
 export function Products() {
   const reduce = useReducedMotion();
   const { addItem } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -144,10 +146,15 @@ export function Products() {
                         Comprar
                       </button>
                       <button
-                        className="w-11 h-11 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg hover:bg-white transition-all"
-                        aria-label="Favoritar"
+                        onClick={() => toggleFavorite(product.id)}
+                        className={`w-11 h-11 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 ${
+                          isFavorite(product.id)
+                            ? "bg-red-500 text-white"
+                            : "bg-white/95 text-roxo hover:bg-white"
+                        }`}
+                        aria-label={isFavorite(product.id) ? "Remover dos favoritos" : "Favoritar"}
                       >
-                        <Heart size={15} className="text-roxo" />
+                        <Heart size={15} className={isFavorite(product.id) ? "fill-white" : ""} />
                       </button>
                     </div>
                   </div>
@@ -203,15 +210,17 @@ export function Products() {
       </div>
 
       {/* Size Modal */}
-      <SizeModal
-        product={selectedProduct!}
-        isOpen={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedProduct(null);
-        }}
-        onAdd={handleConfirmSize}
-      />
+      {selectedProduct && (
+        <SizeModal
+          product={selectedProduct}
+          isOpen={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          onAdd={handleConfirmSize}
+        />
+      )}
     </section>
   );
 }

@@ -70,21 +70,15 @@ export function About() {
               />
               {/* Moldura dourada */}
               <div className="absolute inset-4 border-2 border-dourado/40 rounded-full" />
-              {/* Conteúdo central */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <motion.span
-                  animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="text-6xl mb-4"
-                >
-                  💜
-                </motion.span>
-                <p className="font-[family-name:var(--font-playfair)] text-3xl text-roxo font-semibold mb-2">
-                  Closet
-                </p>
-                <p className="font-[family-name:var(--font-playfair)] text-4xl text-dourado font-bold italic">
-                  Stilus
-                </p>
+              {/* Conteúdo central — Logo real */}
+              <div className="absolute inset-0 flex items-center justify-center p-12">
+                <motion.img
+                  src="/logo.png"
+                  alt="Closet Stilus"
+                  animate={{ scale: [1, 1.03, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-full h-full object-contain drop-shadow-lg"
+                />
               </div>
               {/* Elementos flutuantes */}
               <motion.div

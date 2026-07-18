@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag, Heart, Search } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const navLinks = [
   { href: "#inicio", label: "Início" },
@@ -17,6 +18,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { totalItems, openCart } = useCart();
+  const { totalFavorites } = useFavorites();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -67,8 +69,17 @@ export function Header() {
             <button className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300" aria-label="Buscar">
               <Search size={18} />
             </button>
-            <button className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300" aria-label="Favoritos">
+            <button className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300 relative" aria-label="Favoritos">
               <Heart size={18} />
+              {totalFavorites > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md"
+                >
+                  {totalFavorites}
+                </motion.span>
+              )}
             </button>
             <button
               onClick={openCart}

@@ -181,7 +181,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
               <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cinza-texto/40" />
               <input type="text" value={user} onChange={(e) => setUser(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && passRef.current?.focus()}
-                placeholder="anneloja20"
+                placeholder="Usuário"
                 className="w-full h-12 pl-10 pr-4 rounded-xl bg-cinza-claro border border-transparent focus:border-roxo/30 focus:bg-white text-cinza-escuro text-sm outline-none transition-all" />
             </div>
           </div>
@@ -350,6 +350,12 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
   const maxMonthlyRevenue = Math.max(...monthlySales.map((d) => d.revenue), 1);
   const maxProductCount = Math.max(...topProducts.map((p) => p.count), 1);
 
+  const handleLogout = () => {
+    setUser(""); setPass(""); setLoginError("");
+    setPanelOpen(false); setEditingId(null); setEditData({});
+    logout();
+  };
+
   // ── Embedded: skip gear + login, go straight to panel ──
   if (embedded) {
     return (
@@ -358,7 +364,7 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
           {panelOpen && isLoggedIn && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="fixed inset-0 z-[75] flex items-end sm:items-start sm:justify-end">
-              <div className="absolute inset-0 bg-cinza-escuro/40 backdrop-blur-sm" onClick={() => { setPanelOpen(false); logout(); }} />
+              <div className="absolute inset-0 bg-cinza-escuro/40 backdrop-blur-sm" onClick={() => handleLogout()} />
               <DashboardContent
                 tab={tab} setTab={setTab}
                 editingId={editingId} setEditingId={setEditingId} editData={editData} setEditData={setEditData}
@@ -378,7 +384,7 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
                 handleDeleteCategory={handleDeleteCategory} updateSizes={updateSizes}
                 handleFileUpload={handleFileUpload} toggleOffer={toggleOffer}
                 editFileRef={editFileRef} newFileRef={newFileRef}
-                logout={() => { logout(); setPanelOpen(false); }}
+                logout={() => { handleLogout(); }}
                 resetProducts={() => { resetProducts(); showToast("Produtos resetados!"); }}
                 showToast={showToast} clearSales={() => { clearSales(); showToast("Histórico limpo!"); }}
                 onClose={() => setPanelOpen(false)}
@@ -438,7 +444,7 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
                     <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cinza-texto/40" />
                     <input type="text" value={user} onChange={(e) => setUser(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && passRef.current?.focus()}
-                      placeholder="anneloja20"
+                      placeholder="Usuário"
                       className="w-full h-11 sm:h-12 pl-10 pr-4 rounded-xl bg-cinza-claro border border-transparent focus:border-roxo/30 focus:bg-white text-cinza-escuro text-sm outline-none transition-all" />
                   </div>
                 </div>
@@ -490,7 +496,7 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
               handleDeleteCategory={handleDeleteCategory} updateSizes={updateSizes}
               handleFileUpload={handleFileUpload} toggleOffer={toggleOffer}
               editFileRef={editFileRef} newFileRef={newFileRef}
-              logout={() => { logout(); setPanelOpen(false); }}
+              logout={() => { handleLogout(); }}
               resetProducts={() => { resetProducts(); showToast("Produtos resetados!"); }}
               showToast={showToast} clearSales={() => { clearSales(); showToast("Histórico limpo!"); }}
               onClose={() => setPanelOpen(false)}

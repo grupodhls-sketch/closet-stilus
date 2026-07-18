@@ -10,6 +10,7 @@ const SESSION_TIMEOUT_MS = 4 * 60 * 60 * 1000; // 4 hours
 
 const STORAGE_KEY = "closet-stilus-admin";
 const CAT_STORAGE_KEY = "closet-stilus-categories";
+const AUTH_KEY = "closet-stilus-auth";
 
 const defaultCategories = ["Todos", "Lingerie", "Baby Dolls", "Biquínis", "Cosméticos", "Calçados"];
 
@@ -63,6 +64,11 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setProducts(loadProducts());
     setCategories(loadCategories());
+    // Restore auth state from localStorage
+    try {
+      const auth = localStorage.getItem(AUTH_KEY);
+      if (auth === "true") setIsLoggedIn(true);
+    } catch {}
     setLoaded(true);
     // Clear any old lockout data
     localStorage.removeItem("closet-stilus-attempts");
@@ -79,6 +85,13 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(CAT_STORAGE_KEY, JSON.stringify(categories));
     }
   }, [categories, loaded]);
+
+  // ── Persist auth state ──
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem(AUTH_KEY, isLoggedIn ? "true" : "false");
+    }
+  }, [isLoggedIn, loaded]);
 
   // ── Session timeout ──
   const resetSessionTimer = useCallback(() => {

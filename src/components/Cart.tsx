@@ -46,7 +46,7 @@ export function Cart() {
         }))
       );
       clearCart();
-      window.open(`https://wa.me/5571991626828?text=${message}`, "_blank");
+      window.open(`https://wa.me/557192893334?text=${message}`, "_blank");
     }
   };
 
@@ -126,6 +126,7 @@ export function Cart() {
                           src={item.product.image}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
+                          style={{ objectPosition: `${item.product.imagePos?.x ?? 50}% ${item.product.imagePos?.y ?? 50}%` }}
                         />
                       </div>
 

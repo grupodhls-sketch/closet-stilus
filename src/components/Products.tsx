@@ -121,6 +121,7 @@ export function Products() {
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    style={{ objectPosition: `${product.imagePos?.x ?? 50}% ${product.imagePos?.y ?? 50}%` }}
                     loading="lazy"
                   />
 

@@ -87,7 +87,7 @@ export function CTA() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
-              href="https://wa.me/5571991626828?text=Ol%C3%A1!%20Gostaria%20de%20ver%20os%20produtos"
+              href="https://wa.me/557192893334?text=Ol%C3%A1!%20Gostaria%20de%20ver%20os%20produtos"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -2 }}

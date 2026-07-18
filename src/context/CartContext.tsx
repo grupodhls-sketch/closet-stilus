@@ -10,6 +10,7 @@ export interface Product {
   originalPrice?: number;
   badge?: string;
   image: string;
+  imagePos?: { x: number; y: number }; // percentage 0-100
   sizes: string[];
 }
 

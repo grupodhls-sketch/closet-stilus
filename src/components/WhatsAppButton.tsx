@@ -35,7 +35,7 @@ export function WhatsAppButton() {
 
       {/* WhatsApp Button */}
       <a
-        href="https://wa.me/5571991626828?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20produtos"
+        href="https://wa.me/557192893334?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20produtos"
         target="_blank"
         rel="noopener noreferrer"
         className="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-all duration-300 whatsapp-pulse"

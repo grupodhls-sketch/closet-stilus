@@ -145,32 +145,18 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [lockout, setLockout] = useState(0);
   const passRef = useRef<HTMLInputElement>(null);
 
   if (isLoggedIn) { onLogin(); return null; }
 
-  const handleSubmit = async () => {
-    if (loading || lockout > 0) return;
-    setLoading(true);
+  const handleSubmit = () => {
     setError("");
-    const result = await login(user, pass);
-    setLoading(false);
+    const result = login(user, pass);
     if (result.ok) {
       setUser(""); setPass("");
       onLogin();
     } else {
       setError(result.error || "Erro ao fazer login");
-      if (result.lockoutSeconds) {
-        setLockout(result.lockoutSeconds);
-        const timer = setInterval(() => {
-          setLockout((prev) => {
-            if (prev <= 1) { clearInterval(timer); return 0; }
-            return prev - 1;
-          });
-        }, 1000);
-      }
     }
   };
 
@@ -213,10 +199,10 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
               className="text-red-500 text-xs text-center">{error}</motion.p>
           )}
-          <button onClick={handleSubmit} disabled={loading || lockout > 0}
-            className="w-full h-12 bg-gradient-to-r from-roxo to-lilas text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100">
+          <button onClick={handleSubmit}
+            className="w-full h-12 bg-gradient-to-r from-roxo to-lilas text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
             <Shield size={15} />
-            {lockout > 0 ? `Bloqueado por ${lockout}s` : loading ? "Verificando..." : "Entrar"}
+            Entrar
           </button>
         </div>
         <div className="mt-6 pt-4 border-t border-lavanda/10 text-center">
@@ -281,8 +267,8 @@ export function AdminPanel({ embedded }: AdminPanelProps) {
     else setLoginOpen(true);
   };
 
-  const handleLogin = async () => {
-    const result = await login(user, pass);
+  const handleLogin = () => {
+    const result = login(user, pass);
     if (result.ok) {
       setLoginOpen(false);
       setPanelOpen(true);

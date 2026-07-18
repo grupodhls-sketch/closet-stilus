@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Settings, X, Lock, User, LogOut, Plus, Trash2, Pencil, Check, ImagePlus,
   Package, Tag, BarChart3, TrendingUp, ShoppingCart, Calendar, DollarSign,
-  RotateCcw, ChevronDown, ChevronUp, Star, Minus as MinusIcon,
+  RotateCcw, ChevronDown, ChevronUp, Star, Upload, Percent, Tag as TagIcon,
 } from "lucide-react";
 import { useAdmin } from "@/context/AdminContext";
 import { useSales } from "@/context/SalesContext";
@@ -36,6 +36,31 @@ function formatMonthBR(ym: string) {
   const [y, m] = ym.split("-");
   const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
   return `${months[parseInt(m) - 1]} ${y}`;
+}
+
+// ── Image compression helper ──
+function compressImage(file: File, maxW = 800, quality = 0.7): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let w = img.width;
+        let h = img.height;
+        if (w > maxW) { h = (h * maxW) / w; w = maxW; }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = () => reject(new Error("Falha ao carregar imagem"));
+      img.src = reader.result as string;
+    };
+    reader.onerror = () => reject(new Error("Falha ao ler arquivo"));
+    reader.readAsDataURL(file);
+  });
 }
 
 // ── Mini bar chart ──
@@ -86,6 +111,8 @@ export function AdminPanel() {
   const [expandedSale, setExpandedSale] = useState<string | null>(null);
 
   const passRef = useRef<HTMLInputElement>(null);
+  const editFileRef = useRef<HTMLInputElement>(null);
+  const newFileRef = useRef<HTMLInputElement>(null);
 
   const showToast = (msg: string) => {
     setToast(msg);
@@ -140,6 +167,38 @@ export function AdminPanel() {
     const sizes = value.split(",").map((s) => s.trim()).filter(Boolean);
     if (field === "edit") setEditData((d) => ({ ...d, sizes }));
     else setNewProduct((p) => ({ ...p, sizes }));
+  };
+
+  // ── Image upload handler ──
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "edit" | "new") => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast("Imagem muito grande (máx 5MB)!"); return; }
+    try {
+      const dataUrl = await compressImage(file);
+      if (field === "edit") setEditData((d) => ({ ...d, image: dataUrl }));
+      else setNewProduct((p) => ({ ...p, image: dataUrl }));
+      showToast("Imagem carregada!");
+    } catch { showToast("Erro ao carregar imagem"); }
+    e.target.value = "";
+  };
+
+  // ── Offer toggle ──
+  const toggleOffer = (field: "edit" | "new", discount?: number) => {
+    const pct = discount || 15;
+    const src = field === "edit" ? editData : newProduct;
+    const currentPrice = src.price || 0;
+    if (src.originalPrice) {
+      // Remove offer
+      if (field === "edit") setEditData((d) => ({ ...d, originalPrice: undefined, badge: "" }));
+      else setNewProduct((p) => ({ ...p, originalPrice: undefined, badge: "" }));
+    } else {
+      // Add offer
+      const origPrice = Math.round((currentPrice / (1 - pct / 100)) * 100) / 100;
+      const badge = `-${pct}%`;
+      if (field === "edit") setEditData((d) => ({ ...d, originalPrice: origPrice, badge }));
+      else setNewProduct((p) => ({ ...p, originalPrice: origPrice, badge }));
+    }
   };
 
   const maxDailyRevenue = Math.max(...dailySales.map((d) => d.revenue), 1);
@@ -418,7 +477,8 @@ export function AdminPanel() {
                         {editingId === p.id ? (
                           <div className="p-3.5 space-y-2.5">
                             <div className="flex items-start gap-3">
-                              <div className="w-14 h-14 rounded-xl bg-lavanda/10 overflow-hidden shrink-0">
+                              <div onClick={() => editFileRef.current?.click()}
+                                className="w-14 h-14 rounded-xl bg-lavanda/10 overflow-hidden shrink-0 cursor-pointer hover:ring-2 hover:ring-roxo/30 transition-all">
                                 <img src={editData.image || p.image} alt="" className="w-full h-full object-cover" />
                               </div>
                               <div className="flex-1 space-y-2">
@@ -442,6 +502,18 @@ export function AdminPanel() {
                             </div>
                             <input value={editData.image || ""} onChange={(e) => setEditData((d) => ({ ...d, image: e.target.value }))}
                               placeholder="URL imagem" className="w-full h-9 px-3 rounded-lg bg-white border border-lavanda/20 text-cinza-escuro text-sm outline-none focus:border-roxo/40" />
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => editFileRef.current?.click()}
+                                className="h-9 px-3 rounded-lg bg-lavanda/15 text-roxo text-xs font-medium flex items-center gap-1.5 hover:bg-lavanda/25 transition-all">
+                                <Upload size={12} /> Enviar foto
+                              </button>
+                              <input ref={editFileRef} type="file" accept="image/*" className="hidden"
+                                onChange={(e) => handleFileUpload(e, "edit")} />
+                              <button onClick={() => toggleOffer("edit")}
+                                className={`h-9 px-3 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all ${editData.originalPrice ? "bg-dourado/20 text-dourado-escuro" : "bg-cinza-claro text-cinza-texto hover:bg-cinza-claro/80"}`}>
+                                <Percent size={12} /> {editData.originalPrice ? "Em Oferta" : "Colocar em Oferta"}
+                              </button>
+                            </div>
                             <input value={(editData.sizes || p.sizes).join(", ")} onChange={(e) => updateSizes("edit", e.target.value)}
                               placeholder="Tamanhos: P, M, G" className="w-full h-9 px-3 rounded-lg bg-white border border-lavanda/20 text-cinza-escuro text-sm outline-none focus:border-roxo/40" />
                             <div className="flex gap-2 pt-0.5">
@@ -508,14 +580,15 @@ export function AdminPanel() {
                         <ImagePlus size={14} className="text-roxo" />
                         <h3 className="font-semibold text-cinza-escuro text-xs">Novo Produto</h3>
                       </div>
-                      <div className="w-full aspect-[3/4] max-h-48 rounded-xl bg-white border-2 border-dashed border-lavanda/20 overflow-hidden mb-3 flex items-center justify-center">
+                      <div onClick={() => newFileRef.current?.click()}
+                        className="w-full aspect-[3/4] max-h-48 rounded-xl bg-white border-2 border-dashed border-lavanda/20 overflow-hidden mb-3 flex items-center justify-center cursor-pointer hover:border-roxo/30 hover:bg-lavanda/5 transition-all">
                         {newProduct.image ? (
                           <img src={newProduct.image} alt="Preview" className="w-full h-full object-cover"
                             onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                         ) : (
                           <div className="text-center text-cinza-texto/40">
                             <ImagePlus size={28} className="mx-auto mb-1.5" />
-                            <p className="text-[10px]">URL da imagem</p>
+                            <p className="text-[10px]">Toque para enviar foto</p>
                           </div>
                         )}
                       </div>
@@ -540,6 +613,18 @@ export function AdminPanel() {
                         <input value={newProduct.image} onChange={(e) => setNewProduct((p) => ({ ...p, image: e.target.value }))}
                           placeholder="URL da imagem"
                           className="w-full h-10 px-3.5 rounded-xl bg-white border border-lavanda/20 text-cinza-escuro text-sm outline-none focus:border-roxo/40 transition-all" />
+                        <div className="flex gap-2.5">
+                          <button onClick={() => newFileRef.current?.click()}
+                            className="flex-1 h-10 rounded-xl bg-lavanda/15 text-roxo text-xs font-medium flex items-center justify-center gap-1.5 hover:bg-lavanda/25 transition-all border border-lavanda/20">
+                            <Upload size={13} /> Enviar foto
+                          </button>
+                          <input ref={newFileRef} type="file" accept="image/*" className="hidden"
+                            onChange={(e) => handleFileUpload(e, "new")} />
+                          <button onClick={() => toggleOffer("new")}
+                            className={`flex-1 h-10 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all border ${newProduct.originalPrice ? "bg-dourado/20 text-dourado-escuro border-dourado/30" : "bg-cinza-claro text-cinza-texto border-transparent hover:bg-cinza-claro/80"}`}>
+                            <Percent size={13} /> {newProduct.originalPrice ? "Em Oferta" : "Colocar em Oferta"}
+                          </button>
+                        </div>
                         <input value={newProduct.sizes.join(", ")} onChange={(e) => updateSizes("new", e.target.value)}
                           placeholder="Tamanhos: P, M, G, GG"
                           className="w-full h-10 px-3.5 rounded-xl bg-white border border-lavanda/20 text-cinza-escuro text-sm outline-none focus:border-roxo/40 transition-all" />

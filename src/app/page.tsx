@@ -13,6 +13,7 @@ import { CTA } from "@/components/CTA";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Cart } from "@/components/Cart";
+import { FavoritesPopup } from "@/components/FavoritesPopup";
 import { AdminPanel } from "@/components/AdminPanel";
 
 export default function Home() {
@@ -32,6 +33,7 @@ export default function Home() {
       <Footer />
       <WhatsAppButton />
       <Cart />
+      <FavoritesPopup />
       <AdminPanel />
       </AdminProvider>
       </SalesProvider>

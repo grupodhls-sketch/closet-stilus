@@ -18,7 +18,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { totalItems, openCart } = useCart();
-  const { totalFavorites } = useFavorites();
+  const { totalFavorites, openFavorites } = useFavorites();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -70,12 +70,9 @@ export function Header() {
               <Search size={18} />
             </button>
             <button
-              onClick={() => {
-                const el = document.getElementById("colecao");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={openFavorites}
               className="w-10 h-10 rounded-xl text-cinza-texto hover:text-roxo hover:bg-lavanda/15 flex items-center justify-center transition-all duration-300 relative"
-              aria-label="Favoritos"
+              aria-label="Abrir favoritos"
             >
               <Heart size={18} className={totalFavorites > 0 ? "fill-red-400 text-red-400" : ""} />
               {totalFavorites > 0 && (
@@ -109,12 +106,9 @@ export function Header() {
           {/* Mobile */}
           <div className="lg:hidden flex items-center gap-1">
             <button
-              onClick={() => {
-                const el = document.getElementById("colecao");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={openFavorites}
               className="w-9 h-9 rounded-xl text-cinza-texto hover:text-roxo flex items-center justify-center relative"
-              aria-label="Favoritos"
+              aria-label="Abrir favoritos"
             >
               <Heart size={17} className={totalFavorites > 0 ? "fill-red-400 text-red-400" : ""} />
               {totalFavorites > 0 && (

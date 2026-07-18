@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+/* ============================================
+   CLOSET STILUS — Design Tokens
+   Identidade Visual: Lavanda + Dourado
+   ============================================ */
+
+:root {
+  /* Cores da marca */
+  --lavanda: #D9C3F7;
+  --lilas: #B88BEA;
+  --roxo: #7E58B8;
+  --dourado: #D4AF37;
+  --dourado-escuro: #C8A54B;
+  --branco: #FFFFFF;
+  --off-white: #FBF9FF;
+  --cinza-claro: #F5F0FA;
+  --cinza-texto: #6B5B7B;
+  --cinza-escuro: #3D2E50;
+
+  /* Tipografia */
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-dm-sans);
+
+  /* Espaçamento base (4px scale) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* Transições premium */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.6s;
+
+  --background: #FBF9FF;
+  --foreground: #3D2E50;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-lavanda: var(--lavanda);
+  --color-lilas: var(--lilas);
+  --color-roxo: var(--roxo);
+  --color-dourado: var(--dourado);
+  --color-dourado-escuro: var(--dourado-escuro);
+  --color-off-white: var(--off-white);
+  --color-cinza-claro: var(--cinza-claro);
+  --color-cinza-texto: var(--cinza-texto);
+  --color-cinza-escuro: var(--cinza-escuro);
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-dm-sans);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Headings — estilo editorial elegante */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), Georgia, serif;
+  color: var(--cinza-escuro);
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Seleção de texto com cor da marca */
+::selection {
+  background: var(--lavanda);
+  color: var(--cinza-escuro);
+}
+
+/* ============================================
+   COMPONENTES UTILITÁRIOS
+   ============================================ */
+
+/* Badge dourado */
+.badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  color: var(--dourado-escuro);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Gradiente dourado para textos */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--dourado), var(--dourado-escuro));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Botão primário lavanda */
+.btn-lavanda {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--lilas), var(--roxo));
+  color: white;
+  padding: 16px 32px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s var(--ease-premium);
+  box-shadow: 0 4px 20px rgba(126, 88, 184, 0.25);
+}
+
+.btn-lavanda:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(126, 88, 184, 0.35);
+}
+
+.btn-lavanda:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Botão outline dourado */
+.btn-outline-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  color: var(--dourado-escuro);
+  padding: 16px 32px;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s var(--ease-premium);
+  background: transparent;
+}
+
+.btn-outline-gold:hover {
+  border-color: var(--dourado);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+/* Card produto */
+.card-produto {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-premium);
+  box-shadow: 0 2px 12px rgba(61, 46, 80, 0.06);
+}
+
+.card-produto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(126, 88, 184, 0.15);
+}
+
+/* Seção padding padrão DHLS */
+.section-padding {
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+
+/* Container maxWidth */
+.container-premium {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+@media (min-width: 768px) {
+  .container-premium {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-premium {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+
+/* Brilho suave decorativo */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Flutuação suave */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Pulso WhatsApp */
+@keyframes whatsapp-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+}
+
+.whatsapp-pulse {
+  animation: whatsapp-pulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--off-white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lavanda);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lilas);
+}

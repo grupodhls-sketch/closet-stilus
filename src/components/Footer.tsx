@@ -4,13 +4,9 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, Phone, Mail, ArrowUp } from "lucide-react";
 import { InstagramIcon } from "./SocialIcons";
 
-const socialLinks = [
-  { icon: InstagramIcon, href: "#", label: "Instagram" },
-];
-
 export function Footer() {
   return (
-    <footer className="bg-cinza-escuro text-white/80 relative overflow-hidden">
+    <footer className="bg-cinza-escuro text-white relative overflow-hidden">
       {/* Background decorativo */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-roxo/10 rounded-full blur-3xl -translate-y-1/2" />
 
@@ -20,31 +16,30 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-lavanda flex items-center justify-center">
-                <span className="font-[family-name:var(--font-playfair)] text-roxo font-bold text-lg">CS</span>
+              <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-dourado/30">
+                <img
+                  src="/logo.png"
+                  alt="Closet Stilus"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="font-[family-name:var(--font-playfair)] text-xl font-semibold text-white">
                 Closet Stilus
               </span>
             </div>
-            <p className="text-white/60 text-sm leading-relaxed mb-6">
+            <p className="text-white/50 text-sm leading-relaxed mb-6">
               Moda feminina que valoriza você. Elegância, sofisticação e
               autoestima em cada peça.
             </p>
-            <div className="flex gap-3">
-              {socialLinks.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-white/5 hover:bg-lilas/30 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                  aria-label={s.label}
-                >
-                  <s.icon size={18} className="text-white/70" />
-                </a>
-              ))}
-            </div>
+            <a
+              href="https://www.instagram.com/closet_stillus_/?hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-lilas/20 text-white/60 hover:text-white transition-all duration-300 text-sm"
+            >
+              <InstagramIcon size={16} />
+              @closetstilus
+            </a>
           </div>
 
           {/* Links Rápidos */}
@@ -62,8 +57,9 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-white/50 hover:text-dourado transition-colors text-sm"
+                    className="text-white/60 hover:text-dourado transition-colors text-sm flex items-center gap-2 group"
                   >
+                    <span className="w-0 h-px bg-dourado group-hover:w-3 transition-all duration-300" />
                     {link.label}
                   </a>
                 </li>
@@ -81,8 +77,9 @@ export function Footer() {
                 <li key={cat}>
                   <a
                     href="#colecao"
-                    className="text-white/50 hover:text-dourado transition-colors text-sm"
+                    className="text-white/60 hover:text-dourado transition-colors text-sm flex items-center gap-2 group"
                   >
+                    <span className="w-0 h-px bg-dourado group-hover:w-3 transition-all duration-300" />
                     {cat}
                   </a>
                 </li>
@@ -97,24 +94,41 @@ export function Footer() {
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <Phone size={16} className="text-dourado mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm">(71) 99162-6828</span>
+                <div className="w-8 h-8 rounded-lg bg-lilas/20 flex items-center justify-center shrink-0">
+                  <Phone size={14} className="text-dourado" />
+                </div>
+                <span className="text-white/60 text-sm mt-1">(71) 99162-6828</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={16} className="text-dourado mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm">contato@closetstilus.com.br</span>
+                <div className="w-8 h-8 rounded-lg bg-lilas/20 flex items-center justify-center shrink-0">
+                  <Mail size={14} className="text-dourado" />
+                </div>
+                <span className="text-white/60 text-sm mt-1">contato@closetstilus.com.br</span>
               </li>
               <li className="flex items-start gap-3">
-                <InstagramIcon size={16} className="text-dourado mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm">@closetstilus</span>
+                <div className="w-8 h-8 rounded-lg bg-lilas/20 flex items-center justify-center shrink-0">
+                  <InstagramIcon size={14} className="text-dourado" />
+                </div>
+                <a
+                  href="https://www.instagram.com/closet_stillus_/?hl=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 text-sm mt-1 hover:text-dourado transition-colors"
+                >
+                  @closetstilus
+                </a>
               </li>
               <li className="flex items-start gap-3">
-                <MapPin size={16} className="text-dourado mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm">Salvador — BA</span>
+                <div className="w-8 h-8 rounded-lg bg-lilas/20 flex items-center justify-center shrink-0">
+                  <MapPin size={14} className="text-dourado" />
+                </div>
+                <span className="text-white/60 text-sm mt-1">Salvador — BA</span>
               </li>
               <li className="flex items-start gap-3">
-                <Clock size={16} className="text-dourado mt-0.5 shrink-0" />
-                <span className="text-white/60 text-sm">Seg-Sex: 9h às 18h | Sáb: 9h às 14h</span>
+                <div className="w-8 h-8 rounded-lg bg-lilas/20 flex items-center justify-center shrink-0">
+                  <Clock size={14} className="text-dourado" />
+                </div>
+                <span className="text-white/60 text-sm mt-1">Seg-Sex: 9h às 18h | Sáb: 9h às 14h</span>
               </li>
             </ul>
           </div>
@@ -142,7 +156,7 @@ export function Footer() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-roxo text-white rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-110 transition-transform z-40"
+        className="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-br from-roxo to-lilas text-white rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-110 transition-transform z-40"
         aria-label="Voltar ao topo"
       >
         <ArrowUp size={20} />

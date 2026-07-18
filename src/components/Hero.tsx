@@ -1,12 +1,20 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Truck, ShieldCheck } from "lucide-react";
 
 const stats = [
-  { value: "500+", label: "Clientes Felizes" },
-  { value: "100%", label: "Produtos Selecionados" },
-  { value: "5★", label: "Avaliação" },
+  { value: "500+", label: "Clientes Felizes", icon: "💜" },
+  { value: "100%", label: "Produtos Selecionados", icon: "✨" },
+  { value: "5★", label: "Avaliação", icon: "⭐" },
+];
+
+const floatingElements = [
+  { emoji: "💜", x: "10%", y: "20%", size: "text-4xl", delay: 0, duration: 6 },
+  { emoji: "✨", x: "85%", y: "15%", size: "text-3xl", delay: 1, duration: 5 },
+  { emoji: "🌸", x: "5%", y: "70%", size: "text-2xl", delay: 2, duration: 7 },
+  { emoji: "💫", x: "90%", y: "65%", size: "text-3xl", delay: 0.5, duration: 5.5 },
+  { emoji: "✿", x: "75%", y: "80%", size: "text-2xl", delay: 1.5, duration: 6.5 },
 ];
 
 export function Hero() {
@@ -15,19 +23,48 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative min-h-[100dvh] flex items-center overflow-hidden bg-off-white"
+      className="relative min-h-[100dvh] flex items-center overflow-hidden bg-gradient-to-br from-off-white via-lavanda/10 to-dourado/5"
     >
-      {/* Background decorativo */}
+      {/* Background decorativo animado */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Círculos decorativos lavanda */}
-        <div className="absolute top-20 right-[15%] w-[500px] h-[500px] bg-lavanda/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-lilas/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-dourado/5 rounded-full blur-3xl" />
+        {/* Círculos decorativos */}
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-20 right-[15%] w-[500px] h-[500px] bg-lavanda/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-20 left-[10%] w-[400px] h-[400px] bg-lilas/15 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.05, 1], opacity: [0.15, 0.25, 0.15] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-dourado/8 rounded-full blur-3xl"
+        />
 
-        {/* Padrão floral sutil */}
-        <div className="absolute top-32 left-20 text-dourado/10 text-8xl animate-shimmer select-none">✿</div>
-        <div className="absolute bottom-40 right-32 text-lavanda/15 text-6xl animate-float select-none">❀</div>
-        <div className="absolute top-1/3 right-[8%] text-dourado/8 text-5xl animate-shimmer select-none" style={{ animationDelay: "1s" }}>✾</div>
+        {/* Elementos flutuantes */}
+        {floatingElements.map((el, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              y: [0, -20, 0],
+              rotate: [0, 5, -5, 0],
+              opacity: [0.4, 0.7, 0.4],
+            }}
+            transition={{
+              duration: el.duration,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: el.delay,
+            }}
+            className={`absolute ${el.size} select-none pointer-events-none`}
+            style={{ left: el.x, top: el.y }}
+          >
+            {el.emoji}
+          </motion.div>
+        ))}
       </div>
 
       {/* Content */}
@@ -56,8 +93,22 @@ export function Hero() {
                 className="font-[family-name:var(--font-playfair)] text-5xl md:text-6xl lg:text-7xl text-cinza-escuro leading-[1.08] mb-6"
               >
                 Renove sua{" "}
-                <span className="text-roxo italic">autoestima</span>{" "}
-                <span className="text-dourado">✨</span>
+                <span className="relative">
+                  <span className="text-roxo italic">autoestima</span>
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-dourado to-lilas rounded-full origin-left"
+                  />
+                </span>{" "}
+                <motion.span
+                  animate={{ rotate: [0, 15, -15, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                >
+                  ✨
+                </motion.span>
               </motion.h1>
 
               {/* Subheadline */}
@@ -80,10 +131,10 @@ export function Hero() {
               >
                 <a
                   href="#colecao"
-                  className="btn-lavanda"
+                  className="btn-lavanda group"
                 >
                   Ver Coleção
-                  <ArrowRight size={18} />
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </a>
                 <a
                   href="#sobre"
@@ -93,48 +144,79 @@ export function Hero() {
                 </a>
               </motion.div>
 
-              {/* Social Proof */}
+              {/* Trust badges */}
               <motion.div
                 initial={reduce ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-wrap items-center gap-6 md:gap-10"
+                className="flex flex-wrap items-center gap-6"
               >
-                {stats.map((item) => (
-                  <div key={item.label} className="flex items-center gap-2">
-                    <span className="font-[family-name:var(--font-playfair)] text-xl font-bold text-roxo">
-                      {item.value}
-                    </span>
-                    <span className="text-cinza-texto text-sm">{item.label}</span>
+                {[
+                  { icon: Truck, text: "Entrega Brasil" },
+                  { icon: ShieldCheck, text: "Qualidade Garantida" },
+                  { icon: Star, text: "5★ no Google" },
+                ].map((item) => (
+                  <div key={item.text} className="flex items-center gap-2 text-cinza-texto/60">
+                    <item.icon size={14} className="text-dourado" />
+                    <span className="text-xs font-medium">{item.text}</span>
                   </div>
                 ))}
               </motion.div>
             </div>
 
-            {/* Imagem / Visual */}
+            {/* Visual */}
             <motion.div
               initial={reduce ? false : { opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative hidden lg:block"
             >
-              <div className="relative w-full aspect-[4/5] rounded-[32px] overflow-hidden bg-lavanda/20">
-                {/* Placeholder elegante com gradiente */}
-                <div className="absolute inset-0 bg-gradient-to-br from-lavanda/40 via-lilas/20 to-dourado/10" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                  <div className="text-8xl mb-6 animate-float">👗</div>
-                  <p className="font-[family-name:var(--font-playfair)] text-2xl text-roxo font-semibold mb-2">
-                    Nova Coleção
-                  </p>
-                  <p className="text-cinza-texto text-sm">Lavanda & Dourado</p>
+              <div className="relative w-full aspect-[4/5] rounded-[32px] overflow-hidden">
+                {/* Imagem principal */}
+                <img
+                  src="/products/baby-doll-romantico.jpg"
+                  alt="Closet Stilus Coleção"
+                  className="w-full h-full object-cover"
+                />
+                {/* Overlay gradiente */}
+                <div className="absolute inset-0 bg-gradient-to-t from-roxo/30 via-transparent to-lavanda/20" />
+                {/* Moldura dourada */}
+                <div className="absolute inset-4 border-2 border-dourado/30 rounded-[24px] pointer-events-none" />
+              </div>
+
+              {/* Card flutuante 1 */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-4 -right-4 bg-white rounded-2xl px-5 py-3 shadow-[0_8px_30px_rgba(126,88,184,0.15)]"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">💜</span>
+                  <div>
+                    <p className="text-cinza-escuro font-semibold text-sm">Nova Coleção</p>
+                    <p className="text-cinza-texto text-xs">Lavanda & Dourado</p>
+                  </div>
                 </div>
-                {/* Moldura dourada decorativa */}
-                <div className="absolute inset-4 border-2 border-dourado/20 rounded-[24px] pointer-events-none" />
-              </div>
-              {/* Elemento decorativo flutuante */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-dourado/10 rounded-full flex items-center justify-center animate-float">
-                <span className="text-3xl">💜</span>
-              </div>
+              </motion.div>
+
+              {/* Card flutuante 2 */}
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute -bottom-4 -left-4 bg-white rounded-2xl px-5 py-3 shadow-[0_8px_30px_rgba(126,88,184,0.15)]"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-1">
+                    {["💜", "✨", "🌸"].map((e, i) => (
+                      <span key={i} className="text-lg">{e}</span>
+                    ))}
+                  </div>
+                  <div>
+                    <p className="text-cinza-escuro font-semibold text-sm">Frete Grátis</p>
+                    <p className="text-cinza-texto text-xs">Acima de R$ 199</p>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -152,7 +234,11 @@ export function Hero() {
           transition={{ duration: 1.5, repeat: Infinity }}
           className="w-6 h-10 border-2 border-lilas/30 rounded-full flex justify-center pt-2"
         >
-          <div className="w-1 h-2 bg-lilas rounded-full" />
+          <motion.div
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-1 h-2 bg-lilas rounded-full"
+          />
         </motion.div>
       </motion.div>
     </section>

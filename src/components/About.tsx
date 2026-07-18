@@ -30,10 +30,26 @@ export function About() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="sobre" className="section-padding bg-off-white relative overflow-hidden">
-      {/* Background decorativo */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-lavanda/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-dourado/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+    <section id="sobre" className="section-padding relative overflow-hidden">
+      {/* Background vibrante com gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-br from-lavanda/15 via-white to-lilas/10" />
+
+      {/* Círculos decorativos animados */}
+      <motion.div
+        animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-0 right-0 w-[500px] h-[500px] bg-lavanda/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-dourado/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.05, 1], opacity: [0.15, 0.25, 0.15] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-roxo/10 rounded-full blur-3xl"
+      />
 
       <div className="container-premium relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
@@ -46,13 +62,23 @@ export function About() {
             className="relative"
           >
             <div className="relative aspect-square max-w-md mx-auto">
-              {/* Círculo principal */}
-              <div className="absolute inset-0 bg-gradient-to-br from-lavanda/30 via-lilas/20 to-dourado/10 rounded-full" />
+              {/* Círculo principal com gradiente mais vibrante */}
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-br from-lavanda/40 via-lilas/30 to-dourado/20 rounded-full"
+              />
               {/* Moldura dourada */}
-              <div className="absolute inset-4 border-2 border-dourado/30 rounded-full" />
+              <div className="absolute inset-4 border-2 border-dourado/40 rounded-full" />
               {/* Conteúdo central */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <span className="text-6xl mb-4">💜</span>
+                <motion.span
+                  animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-6xl mb-4"
+                >
+                  💜
+                </motion.span>
                 <p className="font-[family-name:var(--font-playfair)] text-3xl text-roxo font-semibold mb-2">
                   Closet
                 </p>
@@ -61,12 +87,20 @@ export function About() {
                 </p>
               </div>
               {/* Elementos flutuantes */}
-              <div className="absolute top-8 right-8 w-16 h-16 bg-dourado/15 rounded-full flex items-center justify-center animate-float">
+              <motion.div
+                animate={{ y: [0, -10, 0], rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-8 right-8 w-16 h-16 bg-dourado/20 rounded-full flex items-center justify-center"
+              >
                 <span className="text-2xl">✨</span>
-              </div>
-              <div className="absolute bottom-12 left-4 w-14 h-14 bg-lavanda/20 rounded-full flex items-center justify-center animate-float" style={{ animationDelay: "1s" }}>
+              </motion.div>
+              <motion.div
+                animate={{ y: [0, 10, 0], rotate: [0, -10, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute bottom-12 left-4 w-14 h-14 bg-lavanda/25 rounded-full flex items-center justify-center"
+              >
                 <span className="text-xl">🌸</span>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -94,18 +128,26 @@ export function About() {
               você não é apenas uma cliente — é uma amiga.
             </p>
 
-            {/* Valores */}
+            {/* Valores com cards mais vivos */}
             <div className="grid grid-cols-2 gap-4">
-              {values.map((v) => (
-                <div key={v.title} className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-lavanda/30 flex items-center justify-center shrink-0 mt-0.5">
+              {values.map((v, i) => (
+                <motion.div
+                  key={v.title}
+                  initial={reduce ? false : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  className="flex items-start gap-3 bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-lavanda/15 hover:border-lavanda/30 transition-all duration-300"
+                >
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-lavanda/40 to-lilas/30 flex items-center justify-center shrink-0">
                     <v.icon size={16} className="text-roxo" />
                   </div>
                   <div>
                     <p className="text-cinza-escuro font-semibold text-sm">{v.title}</p>
                     <p className="text-cinza-texto text-xs leading-relaxed mt-0.5">{v.description}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>

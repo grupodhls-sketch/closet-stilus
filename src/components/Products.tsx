@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ShoppingBag, Heart, Eye } from "lucide-react";
+import { useState, useCallback } from "react";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, Heart } from "lucide-react";
 import { products } from "@/data/products";
 import { useCart, Product } from "@/context/CartContext";
 import { SizeModal } from "./SizeModal";
@@ -11,12 +11,12 @@ const categories = ["Todos", "Lingerie", "Baby Dolls", "Biquínis", "Cosméticos
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export function Products() {
@@ -26,10 +26,14 @@ export function Products() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const filteredProducts =
-    activeCategory === "Todos"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+  const filteredProducts = useCallback(() => {
+    if (activeCategory === "Todos") return products;
+    return products.filter((p) => p.category === activeCategory);
+  }, [activeCategory]);
+
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+  };
 
   const handleAddToCart = (product: Product) => {
     setSelectedProduct(product);
@@ -42,9 +46,15 @@ export function Products() {
     }
   };
 
+  const displayedProducts = filteredProducts();
+
   return (
-    <section id="colecao" className="section-padding bg-white">
-      <div className="container-premium">
+    <section id="colecao" className="section-padding bg-gradient-to-b from-white via-off-white to-white relative overflow-hidden">
+      {/* Background decorativo */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-lavanda/8 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-dourado/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
+
+      <div className="container-premium relative z-10">
         {/* Header */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 20 }}
@@ -74,10 +84,10 @@ export function Products() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => handleCategoryChange(cat)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === cat
-                  ? "bg-roxo text-white shadow-[0_4px_15px_rgba(126,88,184,0.3)]"
+                  ? "bg-roxo text-white shadow-[0_4px_15px_rgba(126,88,184,0.3)] scale-105"
                   : "bg-cinza-claro text-cinza-texto hover:bg-lavanda/30 hover:text-roxo"
               }`}
             >
@@ -87,100 +97,109 @@ export function Products() {
         </motion.div>
 
         {/* Products Grid */}
-        <motion.div
-          variants={reduce ? undefined : containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {filteredProducts.map((product) => (
-            <motion.div
-              key={product.id}
-              variants={reduce ? undefined : itemVariants}
-              className="card-produto group"
-            >
-              {/* Image */}
-              <div className="relative aspect-[3/4] bg-gradient-to-br from-lavanda/20 to-lilas/10 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {displayedProducts.map((product) => (
+              <motion.div
+                key={product.id}
+                variants={reduce ? undefined : itemVariants}
+                initial="hidden"
+                animate="visible"
+                className="card-produto group"
+              >
+                {/* Image */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-lavanda/10">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    loading="lazy"
+                  />
 
-                {/* Badge */}
-                {product.badge && (
-                  <div className="absolute top-4 left-4 bg-dourado text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                    {product.badge}
-                  </div>
-                )}
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-cinza-escuro/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-cinza-escuro/0 group-hover:bg-cinza-escuro/10 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                      aria-label="Adicionar ao carrinho"
-                    >
-                      <ShoppingBag size={16} className="text-roxo" />
-                    </button>
-                    <button
-                      className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                      aria-label="Favoritar"
-                    >
-                      <Heart size={16} className="text-roxo" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Moldura dourada no hover */}
-                <div className="absolute inset-3 border-2 border-dourado/0 group-hover:border-dourado/20 rounded-2xl transition-all duration-500 pointer-events-none" />
-              </div>
-
-              {/* Info */}
-              <div className="p-5">
-                <p className="text-cinza-texto text-xs font-medium uppercase tracking-wider mb-1">
-                  {product.category}
-                </p>
-                <h3 className="font-[family-name:var(--font-playfair)] text-lg text-cinza-escuro font-semibold mb-2">
-                  {product.name}
-                </h3>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-roxo font-bold text-lg">
-                    R$ {product.price.toFixed(2).replace(".", ",")}
-                  </span>
-                  {product.originalPrice && (
-                    <span className="text-cinza-texto/50 text-sm line-through">
-                      R$ {product.originalPrice.toFixed(2).replace(".", ",")}
-                    </span>
+                  {/* Badge */}
+                  {product.badge && (
+                    <div className="absolute top-4 left-4 bg-dourado text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                      {product.badge}
+                    </div>
                   )}
+
+                  {/* Hover actions */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="flex-1 h-11 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center gap-2 text-roxo font-semibold text-sm hover:bg-white transition-all shadow-lg"
+                      >
+                        <ShoppingBag size={15} />
+                        Comprar
+                      </button>
+                      <button
+                        className="w-11 h-11 bg-white/95 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg hover:bg-white transition-all"
+                        aria-label="Favoritar"
+                      >
+                        <Heart size={15} className="text-roxo" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Moldura dourada no hover */}
+                  <div className="absolute inset-3 border-2 border-dourado/0 group-hover:border-dourado/30 rounded-2xl transition-all duration-500 pointer-events-none" />
                 </div>
 
-                {/* Sizes preview */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {product.sizes.map((size) => (
-                    <span
-                      key={size}
-                      className="text-[10px] px-2 py-0.5 rounded bg-cinza-claro text-cinza-texto font-medium"
-                    >
-                      {size}
+                {/* Info */}
+                <div className="p-5">
+                  <p className="text-lilas text-xs font-semibold uppercase tracking-wider mb-1">
+                    {product.category}
+                  </p>
+                  <h3 className="font-[family-name:var(--font-playfair)] text-lg text-cinza-escuro font-semibold mb-2">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-roxo font-bold text-lg">
+                      R$ {product.price.toFixed(2).replace(".", ",")}
                     </span>
-                  ))}
-                </div>
+                    {product.originalPrice && (
+                      <span className="text-cinza-texto/50 text-sm line-through">
+                        R$ {product.originalPrice.toFixed(2).replace(".", ",")}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Add to cart button */}
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="w-full h-11 bg-roxo/10 text-roxo rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-roxo hover:text-white transition-all duration-300"
-                >
-                  <ShoppingBag size={15} />
-                  Adicionar ao Carrinho
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                  {/* Sizes */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {product.sizes.map((size) => (
+                      <span
+                        key={size}
+                        className="text-[10px] px-2 py-0.5 rounded-md bg-lavanda/15 text-roxo font-medium"
+                      >
+                        {size}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Add to cart */}
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="w-full h-11 bg-gradient-to-r from-roxo to-lilas text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:shadow-[0_4px_20px_rgba(126,88,184,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                  >
+                    <ShoppingBag size={15} />
+                    Adicionar ao Carrinho
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Size Modal */}
